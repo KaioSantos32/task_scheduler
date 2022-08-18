@@ -4,7 +4,7 @@ import 'package:flutter_3_ponto_0/task.dart';
 class addTask extends StatelessWidget {
   addTask({Key? key}) : super(key: key);
 
-  List<Task> items = [
+  List<Task> items = const [
     Task('Aprender Flutter',
         'https://pbs.twimg.com/media/Eu7m692XIAEvxxP?format=png&name=large', 3),
     Task(
@@ -78,9 +78,9 @@ class addTask extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {Navigator.pop(context);},
 
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const Text(
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
                         "Adicionar",
                         style: TextStyle(fontSize: 15),
                       ),
