@@ -1,5 +1,7 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import "difficulty.dart";
+
 
 class Task extends StatefulWidget {
   final String titulo;
@@ -15,6 +17,7 @@ class Task extends StatefulWidget {
 
 class _TaskState extends State<Task> {
   int nivel = 0;
+  int _randomColor = Random().nextInt(Colors.primaries.length);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class _TaskState extends State<Task> {
           Container(
             // parte azul, "separador"
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 27, 133, 116),
+              color: Colors.primaries[_randomColor],
               borderRadius: BorderRadius.circular(7),
             ),
             height: 140,
@@ -53,7 +56,7 @@ class _TaskState extends State<Task> {
                       height: 100,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.0),
-                        child: Image.network(
+                        child: Image.asset(
                           widget.foto,
                           fit: BoxFit.cover,
                         ),
@@ -84,12 +87,13 @@ class _TaskState extends State<Task> {
                             onPressed: () {
                               setState(() {
                                 nivel++;
+                                print((nivel/widget.dificuldade)/10);
+                                if((nivel/widget.dificuldade)/10>= 1){
+                                  _randomColor = Random().nextInt(Colors.primaries.length);
+                                  nivel = 0;
+                                }
                               });
                             },
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.teal.shade500,
-                              textStyle: const TextStyle(fontSize: 14),
-                            ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.end,
