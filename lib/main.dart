@@ -1,29 +1,32 @@
 import 'package:flutter/material.dart';
-import "package:flutter_3_ponto_0/initial_screen.dart";
+import 'package:sqflite/sqflite.dart';
+import 'package:task_scheduler/data/task_inherited.dart';
+import 'package:task_scheduler/screens/initial_screen.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  MyApp({Key? key}) : super(key: key);
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Task scheduler',
       theme: ThemeData(
-        primarySwatch: Colors.teal,
+        primarySwatch: Colors.blue,
+        secondaryHeaderColor: Colors.blueGrey,
       ),
-      home: const initialScreen(),
 
+      home: TaskInherited(child: const InitialScreen()),
     );
   }
 }
+
+
+
+
+
+
 
