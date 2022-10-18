@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:task_scheduler/data/task_dao.dart';
-import 'package:task_scheduler/data/task_inherited.dart';
 import '../components/task.dart';
 import 'form_screen.dart';
 
@@ -18,6 +17,13 @@ class _InitialScreenState extends State<InitialScreen> {
       appBar: AppBar(
         leading: Container(),
         title: const Text('Tarefas'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                setState(() {});
+              },
+              icon: Icon(Icons.refresh))
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 8, bottom: 70),
@@ -29,19 +35,30 @@ class _InitialScreenState extends State<InitialScreen> {
               case ConnectionState.none:
                 return Center(
                   child: Column(
-                    children: [
+                    children: const [
                       CircularProgressIndicator(),
                       Text("Carregando"),
                     ],
                   ),
                 );
-                break;
               case ConnectionState.waiting:
-                // TODO: Handle this case.
-                break;
+                return Center(
+                  child: Column(
+                    children: const [
+                      CircularProgressIndicator(),
+                      Text("Carregando"),
+                    ],
+                  ),
+                );
               case ConnectionState.active:
-                // TODO: Handle this case.
-                break;
+                return Center(
+                  child: Column(
+                    children: const [
+                      CircularProgressIndicator(),
+                      Text("Carregando"),
+                    ],
+                  ),
+                );
               case ConnectionState.done:
                 if (snapshot.hasData && items != null) {
                   if (items.isNotEmpty) {
@@ -56,7 +73,7 @@ class _InitialScreenState extends State<InitialScreen> {
                   return Center(
                     child: Column(
                       children: const [
-                        Icon(Icons.error_outline, size: 128),
+                        Icon(Icons.hourglass_empty_rounded, size: 250),
                         Text(
                           "Não há nenhuma Tarefa",
                           style: TextStyle(fontSize: 32),
@@ -65,16 +82,22 @@ class _InitialScreenState extends State<InitialScreen> {
                     ),
                   );
                 }
-                return const Center(
-                  child: Text(
-                    "Erro ao Carregar tarefas",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.error_outline, size: 128),
+                      Text(
+                        "Erro ao Carregar tarefas",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
                   ),
                 );
             }
-            return const Text("Erro Desconhecido");
           },
         ),
       ),
@@ -87,7 +110,9 @@ class _InitialScreenState extends State<InitialScreen> {
                 builder: (contextNew) => FormScreen(
                   taskContext: context,
                 ),
-              ));
+              )).then((value) => setState(() {
+                print("Recarregando tela inicial");
+              }));
         },
         child: const Icon(Icons.add),
       ),

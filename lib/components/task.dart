@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_scheduler/components/difficulty.dart';
+import 'package:task_scheduler/data/task_dao.dart';
 
 
 class Task extends StatefulWidget {
@@ -7,9 +8,9 @@ class Task extends StatefulWidget {
   final String foto;
   final int dificuldade;
   int nivel;
+
   Task(this.nome, this.foto, this.dificuldade, [this.nivel = 0, Key? key,])
       : super(key: key);
-
 
 
   @override
@@ -58,13 +59,13 @@ class _TaskState extends State<Task> {
                         borderRadius: BorderRadius.circular(4),
                         child: assetOrNetwork()
                             ? Image.asset(
-                                widget.foto,
-                                fit: BoxFit.cover,
-                              )
+                          widget.foto,
+                          fit: BoxFit.cover,
+                        )
                             : Image.network(
-                                widget.foto,
-                                fit: BoxFit.cover,
-                              ),
+                          widget.foto,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     Column(
@@ -89,6 +90,9 @@ class _TaskState extends State<Task> {
                       height: 52,
                       width: 52,
                       child: ElevatedButton(
+                          onLongPress: () {
+                            TaskDao().delete(widget.nome);
+                          },
                           onPressed: () {
                             //print(widget.nivel);
                             setState(() {

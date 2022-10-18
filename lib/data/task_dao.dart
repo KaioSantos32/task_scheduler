@@ -73,7 +73,7 @@ class TaskDao {
 
   // SUPPORT FUNCTIONS
 
-  List<Task> toList(List<Map<String, dynamic>> listaDeTarefas) {
+  List<Task> toList(List<Map<String, dynamic>> listaDeTarefas){
     debugPrint("Convertendo toList...");
     final List<Task> tarefas = [];
     for (Map<String, dynamic> linha in listaDeTarefas) {

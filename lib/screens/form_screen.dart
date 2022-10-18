@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:task_scheduler/data/task_inherited.dart';
+import 'package:task_scheduler/components/task.dart';
+import '../data/task_dao.dart';
 
 class FormScreen extends StatefulWidget {
   const FormScreen({Key? key, required this.taskContext}) : super(key: key);
@@ -28,8 +29,7 @@ class _FormScreenState extends State<FormScreen> {
     if (value != null &&
         value.isEmpty &&
         int.parse(value) > 5 &&
-        int.parse(value) > 1
-    ) {
+        int.parse(value) > 1) {
       return true;
     }
     return false;
@@ -142,10 +142,12 @@ class _FormScreenState extends State<FormScreen> {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        TaskInherited.of(widget.taskContext).newTask(
+                        TaskDao().save(Task(
                             nameController.text,
                             imageController.text,
-                            int.parse(difficultyController.text));
+                            int.parse(difficultyController.text),
+                        ));
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Criando uma nova Tarefa'),
