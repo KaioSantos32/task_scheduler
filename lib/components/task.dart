@@ -3,22 +3,26 @@ import 'package:task_scheduler/components/difficulty.dart';
 import 'package:task_scheduler/data/task_dao.dart';
 
 
+// ignore: must_be_immutable
 class Task extends StatefulWidget {
   final String nome;
   final String foto;
   final int dificuldade;
   int nivel;
 
-  Task(this.nome, this.foto, this.dificuldade, [this.nivel = 0, Key? key,])
-      : super(key: key);
-
+  Task(
+    this.nome,
+    this.foto,
+    this.dificuldade, [
+    this.nivel = 0,
+    Key? key,
+  ]) : super(key: key);
 
   @override
   State<Task> createState() => _TaskState();
 }
 
 class _TaskState extends State<Task> {
-
   bool assetOrNetwork() {
     if (widget.foto.contains('http') || widget.foto.contains('https')) {
       return false;
@@ -59,13 +63,13 @@ class _TaskState extends State<Task> {
                         borderRadius: BorderRadius.circular(4),
                         child: assetOrNetwork()
                             ? Image.asset(
-                          widget.foto,
-                          fit: BoxFit.cover,
-                        )
+                                widget.foto,
+                                fit: BoxFit.cover,
+                              )
                             : Image.network(
-                          widget.foto,
-                          fit: BoxFit.cover,
-                        ),
+                                widget.foto,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                     Column(
@@ -91,12 +95,36 @@ class _TaskState extends State<Task> {
                       width: 52,
                       child: ElevatedButton(
                           onLongPress: () {
-                            TaskDao().delete(widget.nome);
+                            showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                title: Text("Excluindo Tarefa ${widget.nome}"),
+                                content: const Text(
+                                    "Tem certeza que deseja excluir a tarefa?"),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        TaskDao().delete(widget.nome);
+                                        Navigator.pop(context, '');
+                                        setState(() {});
+                                      },
+                                      child: const Text("Sim")),
+                                  TextButton(
+                                      onPressed: (){
+                                        Navigator.pop(context, '');
+                                      },
+                                      child: const Text("Não")),
+                                ],
+                              ),
+                            );
                           },
                           onPressed: () {
                             //print(widget.nivel);
                             setState(() {
                               widget.nivel++;
+                              TaskDao().save(
+                                Task(widget.nome, widget.foto, widget.dificuldade, widget.nivel),
+                              );
                             });
                             // print(nivel);
                           },
@@ -121,7 +149,7 @@ class _TaskState extends State<Task> {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: SizedBox(
-                      width: 300,
+                      width: 290,
                       child: LinearProgressIndicator(
                         color: Colors.white,
                         value: (widget.dificuldade > 0)

@@ -8,11 +8,13 @@ class TaskDao {
   static String tableSql = 'CREATE TABLE $_tablename('
       '$_name TEXT,'
       '$_difficulty INTEGER ,'
+      '$_difficultyLevel INTEGER,'
       '$_image TEXT)';
 
-  static const String _tablename = "taskTable";
+  static const String _tablename = "taskTabletest";
   static const String _name = "name";
   static const String _difficulty = "difficulty";
+  static const String _difficultyLevel = "difficultyLevel";
   static const String _image = "image";
 
   // MAIN FUNTIONS
@@ -28,7 +30,8 @@ class TaskDao {
       debugPrint("Tarefa não existia");
       return await bancoDeDados.insert(_tablename, taskMap);
     } else {
-      debugPrint("A Tarefa já existia");
+      debugPrint("A Tarefa já existia, atualizando a tarefa");
+      print(taskMap);
       return await bancoDeDados.update(_tablename, taskMap,
           where: "$_name = ?", whereArgs: [tarefa.nome]);
     }
@@ -43,6 +46,8 @@ class TaskDao {
         await bancoDeDados.query(_tablename);
     debugPrint("Tabela encontrada: $result");
     // retorna uma lista de Tasks
+
+    print(toList(result));
     return toList(result);
   }
 
@@ -89,6 +94,7 @@ class TaskDao {
     final Map<String, dynamic> mapaDeTarefas = Map();
     mapaDeTarefas[_name] = tarefa.nome;
     mapaDeTarefas[_difficulty] = tarefa.dificuldade;
+    mapaDeTarefas[_difficultyLevel] = tarefa.nivel;
     mapaDeTarefas[_image] = tarefa.foto;
 
     return mapaDeTarefas;
