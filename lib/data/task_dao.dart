@@ -8,24 +8,24 @@ class TaskDao {
   static String tableSql = 'CREATE TABLE $_tablename('
       '$_name TEXT,'
       '$_difficulty INTEGER ,'
-      '$_difficultyLevel INTEGER,'
+      '$_level INTEGER,'
       '$_image TEXT)';
 
-  static const String _tablename = "taskTabletest";
+  static const String _tablename = "tarefas";
   static const String _name = "name";
   static const String _difficulty = "difficulty";
-  static const String _difficultyLevel = "difficultyLevel";
+  static const String _level = "nivel";
   static const String _image = "image";
 
   // MAIN FUNTIONS
 
   save(Task tarefa) async {
-    debugPrint("Entrando função SAVE");
 
     final Database bancoDeDados = await getDatabase();
     var itemExists = await find(tarefa.nome);
 
-    Map<String, dynamic> taskMap = toMap(tarefa);
+    Map<String, dynamic> taskMap = _toMap(tarefa);
+
     if (itemExists.isEmpty) {
       debugPrint("Tarefa não existia");
       return await bancoDeDados.insert(_tablename, taskMap);
@@ -76,28 +76,26 @@ class TaskDao {
     );
   }
 
-  // SUPPORT FUNCTIONS
-
   List<Task> toList(List<Map<String, dynamic>> listaDeTarefas){
     debugPrint("Convertendo toList...");
     final List<Task> tarefas = [];
     for (Map<String, dynamic> linha in listaDeTarefas) {
-      final Task tarefa = Task(linha[_name], linha[_image], linha[_difficulty]);
+      final Task tarefa = Task(linha[_name], linha[_image], linha[_difficulty],
+          linha[_level]);
       tarefas.add(tarefa);
     }
     debugPrint("lISTA DE TAREFAS: $tarefas");
     return tarefas;
   }
 
-  Map<String, dynamic> toMap(Task tarefa) {
+  Map<String, dynamic> _toMap(Task tarefa) {
     debugPrint("Convertendo tarefa em Map");
     final Map<String, dynamic> mapaDeTarefas = Map();
     mapaDeTarefas[_name] = tarefa.nome;
     mapaDeTarefas[_difficulty] = tarefa.dificuldade;
-    mapaDeTarefas[_difficultyLevel] = tarefa.nivel;
+    mapaDeTarefas[_level] = tarefa.nivel;
     mapaDeTarefas[_image] = tarefa.foto;
 
     return mapaDeTarefas;
   }
-
 }

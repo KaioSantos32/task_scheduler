@@ -2,21 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:task_scheduler/components/difficulty.dart';
 import 'package:task_scheduler/data/task_dao.dart';
 
-
-// ignore: must_be_immutable
 class Task extends StatefulWidget {
   final String nome;
   final String foto;
   final int dificuldade;
   int nivel;
 
-  Task(
-    this.nome,
-    this.foto,
-    this.dificuldade, [
-    this.nivel = 0,
-    Key? key,
-  ]) : super(key: key);
+  Task(this.nome, this.foto, this.dificuldade, [this.nivel = 0, Key? key])
+      : super(key: key);
 
   @override
   State<Task> createState() => _TaskState();
@@ -97,10 +90,11 @@ class _TaskState extends State<Task> {
                           onLongPress: () {
                             showDialog(
                               context: context,
-                              builder: (_) => AlertDialog(
-                                title: Text("Excluindo Tarefa ${widget.nome}"),
-                                content: const Text(
-                                    "Tem certeza que deseja excluir a tarefa?"),
+                              builder: (context) => AlertDialog(
+                                title: Text(
+                                  "Excluindo Tarefa ${widget.nome}",
+                                ),
+                                content: const Text("Tem certeza que deseja excluir a tarefa?"),
                                 actions: [
                                   TextButton(
                                       onPressed: () {
@@ -110,7 +104,7 @@ class _TaskState extends State<Task> {
                                       },
                                       child: const Text("Sim")),
                                   TextButton(
-                                      onPressed: (){
+                                      onPressed: () {
                                         Navigator.pop(context, '');
                                       },
                                       child: const Text("Não")),
@@ -123,7 +117,8 @@ class _TaskState extends State<Task> {
                             setState(() {
                               widget.nivel++;
                               TaskDao().save(
-                                Task(widget.nome, widget.foto, widget.dificuldade, widget.nivel),
+                                Task(widget.nome, widget.foto,
+                                    widget.dificuldade, widget.nivel),
                               );
                             });
                             // print(nivel);
